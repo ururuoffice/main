@@ -19,8 +19,10 @@ defmodule Main.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", Main do
-  #   pipe_through :api
-  # end
+  #Other scopes may use custom stacks.
+  scope "/api", Main do
+    pipe_through :api
+
+    resources "/offices", OfficeController, only: [:index, :show]
+  end
 end
