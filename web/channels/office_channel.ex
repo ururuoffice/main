@@ -11,17 +11,20 @@ defmodule Main.OfficeChannel do
 
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
-  def handle_in("ping", payload, socket) do
-    broadcast! socket, "ping", payload
+  def handle_in("take_place", %{office_id: office_id, from_id: from_id, to_id: to_id, user: user}, socket) do
+    #broadcast! socket, "ping", payload
+    office = Main.Models.Office.find office_id
 
-    #{:reply, {:ok, payload}, socket}
-    {:noreply, socket}
-  end
+    case Main.Office.take_place(office, to_id, user) do
+      {:error, message} -> broadcast! socket, "place_taken", %{error: message}
+      {:ok,    place_id} ->
+        if from_id do
+          Main.Office.leave_place office, from_id, user
+        end
 
-  # It is also common to receive messages from the client and
-  # broadcast to everyone in the current topic (room:lobby).
-  def handle_in("shout", payload, socket) do
-    broadcast socket, "shout", payload
+        broadcast! socket, "place_taken", %{place_id: place_id}
+    end
+
     {:noreply, socket}
   end
 
