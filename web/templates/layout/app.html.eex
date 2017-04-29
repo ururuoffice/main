@@ -13,9 +13,6 @@
   </head>
 
   <body>
-    <div id="app">
-      <app><app>
-    </div>
     <div class="container">
       <header class="header">
         <nav role="navigation">
