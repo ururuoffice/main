@@ -20,6 +20,7 @@ import "phoenix_html"
 
 import Vue from 'vue'
 import App from "./components/App.vue"
+import socket from './socket'
 
 window.userId = Math.random().toString(36).substring(7)
 

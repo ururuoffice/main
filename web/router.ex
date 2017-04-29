@@ -28,6 +28,8 @@ defmodule Main.Router do
   scope "/" do
     pipe_through :protected
     coherence_routes :protected
+
+    get "/app", Main.AppController, :index
   end
 
   pipeline :api do

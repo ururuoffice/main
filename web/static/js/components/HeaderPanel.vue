@@ -1,8 +1,8 @@
 <template>
-  <header>
-    <button @click="toggleOffices">Open offices list</button>
-    <button @click="toggleUsers">Open users list</button>
-  </header>
+  <!--<header>-->
+    <!--<button @click="toggleOffices">Open offices list</button>-->
+    <!--<button @click="toggleUsers">Open users list</button>-->
+  <!--</header>-->
 </template>
 
 <script>
