@@ -38,12 +38,15 @@ defmodule Main.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    resources "/offices", OfficeController
   end
 
   #Other scopes may use custom stacks.
   scope "/api", Main do
     pipe_through :api
 
-    resources "/offices", OfficeController, only: [:index, :show]
+    scope "/v1", as: :v1 do
+      resources "/offices", Api.V1.OfficeController, only: [:index, :show]
+    end
   end
 end

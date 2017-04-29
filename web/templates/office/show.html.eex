@@ -1,0 +1,23 @@
+<h2>Show office</h2>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @office.title %>
+  </li>
+
+  <li>
+    <strong>Width:</strong>
+    <%= @office.width %>
+  </li>
+
+  <li>
+    <strong>Height:</strong>
+    <%= @office.height %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: office_path(@conn, :edit, @office) %>
+<%= link "Back", to: office_path(@conn, :index) %>

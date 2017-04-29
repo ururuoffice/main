@@ -1,4 +1,4 @@
-defmodule Main.Office do
+defmodule Main.OfficeServer do
   use GenServer
 
   def new(office) do
