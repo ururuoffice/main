@@ -25,7 +25,7 @@ defmodule Main.OfficeChannel do
 
     case Main.Office.take_place(office, to_id, user) do
       {:error, message} -> broadcast! socket, "place_taken", %{error: message}
-      {:ok,    place_id} ->
+      {:ok,    _place_id} ->
         if from_id do
           Main.Office.leave_place office, from_id, user
         end
