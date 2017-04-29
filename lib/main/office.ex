@@ -32,17 +32,24 @@ defmodule Main.Office do
     whereis(office) |> GenServer.call(:get_state)
   end
 
-  def leave_place(office, room_id, place_id) do
-    new_state = put_in get_state(office), [:rooms, room_id, :places, place_id, :user], nil
-    update(new_state, office)
+  def leave_place(office, room_id, user_id) do
+    state = get_state(office)
 
-    {:ok}
+    case find_place(state, room_id, nil) do
+      nil ->
+        {:error, "Can't find user in the room"}
+      place_id ->
+        new_state = put_in state, [:rooms, room_id, :places, place_id, :user], user_id
+        update(new_state, office)
+
+        {:ok, place_id}
+    end
   end
 
   def take_place(office, room_id, user_id) do
     state = get_state(office)
 
-    case find_free_place(state, room_id) do
+    case find_place(state, room_id, nil) do
       nil ->
         {:error, "No free places"}
       place_id ->
@@ -53,11 +60,11 @@ defmodule Main.Office do
     end
   end
 
-  defp find_free_place(state, room_id) do
-    free_places = Map.to_list(state.rooms[room_id].places)
-                  |> Enum.filter(fn({_id, place}) -> place[:user] == nil end)
+  defp find_place(state, room_id, user_id) do
+    places = Map.to_list(state.rooms[room_id].places)
+                  |> Enum.filter(fn({_id, place}) -> place[:user] == user_id end)
 
-    case free_places do
+    case places do
       [] -> nil
       [{id, _} | _] -> id
     end
