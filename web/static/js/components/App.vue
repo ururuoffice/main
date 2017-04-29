@@ -56,6 +56,12 @@
       const { channel } = this
       const _this = this
 
+      const userName = document.getElementById('user-id').dataset.user
+
+      this.current_user.name = userName
+
+      console.log(userName)
+
       channel.join()
         .receive('ok', resp => { console.log('Joined successfully', resp) })
         .receive('error', resp => { console.log('Unable to join', resp) })
