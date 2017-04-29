@@ -1,26 +1,29 @@
 <template>
   <div
     class="place"
-    :class="{'place__fill': busy}"
-    :style="position">
+    :class="{'place__fill': user !== null}"
+    :style="getPosition">
   </div>
 </template>
 
 <script>
+  import { prependCssDimension } from '../heplers';
 
+  export default {
+    name: 'place',
+    props: {
+      position: Object,
+      busy: Boolean,
+      user: String
+    },
+    computed: {
+      getPosition() {
+        const { position } = this
 
-export default {
-  name: 'place',
-  props: {
-    position: Object,
-    busy: Boolean
-  },
-  computed: {
-    getPosition() {
-
+        return prependCssDimension(position)
+      }
     }
-  }
-};
+  };
 </script>
 
 <style scoped lang="scss">
@@ -30,7 +33,6 @@ export default {
     width: 40px;
     height: 40px;
     border-radius: 100%;
-    cursor: pointer;
 
     &__fill {
       background-color: red;
