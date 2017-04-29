@@ -36,7 +36,7 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :main, Main.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
+  username: "tokenvolt",
   password: "postgres",
   database: "main_dev",
   hostname: "localhost",

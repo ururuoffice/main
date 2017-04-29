@@ -25,6 +25,14 @@ defmodule Main.RoomChannel do
     {:noreply, socket}
   end
 
+  # It is also common to receive messages from the client and
+  # broadcast to everyone in the current topic (room:lobby).
+  def handle_in("message", %{"body" => body}, socket) do
+    body |> IO.inspect
+    broadcast! socket, "message", %{body: body}
+    {:noreply, socket}
+  end
+
   # Add authorization logic here as required.
   defp authorized?(_payload) do
     true

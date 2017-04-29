@@ -1,6 +1,9 @@
-<video id="localVideo", autoplay></video>
-<video id="remoteVideo", autoplay></video>
-
-<button id="room_1">Room 1</button>
-<button id="room_2">Room 2</button>
-<button id="leave_all">Leave all</button>
+<div style="border: 1px solid #000">
+  <video id="localVideo", autoplay></video>
+</div>
+<div style="border: 1px solid red">
+  <video id="remoteVideo", autoplay></video>
+</div>
+<%# <button id="room_1">Room 1</button> %>
+<%# <button id="room_2">Room 2</button> %>
+<%# <button id="leave_all">Leave all</button> %>
