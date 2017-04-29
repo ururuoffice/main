@@ -32,6 +32,14 @@ defmodule Main.OfficeServer do
     whereis(office) |> GenServer.call(:get_state)
   end
 
+  def get_room_users(office, room_id) do
+    get_state(office)
+      |> get_in([:rooms, room_id, :places])
+      |> Map.to_list
+      |> Enum.map(fn({_id, place}) -> place[:user] end)
+      |> Enum.reject(fn v -> is_nil(v) end)
+  end
+
   def leave_place(office, room_id, user_id) do
     state = get_state(office)
 

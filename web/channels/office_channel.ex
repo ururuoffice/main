@@ -30,6 +30,8 @@ defmodule Main.OfficeChannel do
           Main.OfficeServer.leave_place office, from_id, user
         end
 
+        message = Main.OfficeServer.get_room_users(office, to_id) -- [user]
+        Main.Endpoint.broadcast "user:" <> user, "room_joined", %{message: message}
         broadcast! socket, "office_updated", Main.OfficeServer.get_state(office)
     end
 

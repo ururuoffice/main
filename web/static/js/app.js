@@ -22,7 +22,7 @@ import Vue from 'vue'
 import App from "./components/App.vue"
 import socket from './socket'
 
-window.userId = Math.random().toString(36).substring(7)
+import SimplePeer from "simple-peer";
 
 Vue.component('app', App)
 

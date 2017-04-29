@@ -27,8 +27,8 @@
   import socket from "../socket";
   import Room from './Room';
   import R from 'ramda';
-  import SimplePeer from "simple-peer"
-  import { toArrayWithKeyAsId } from '../heplers'
+  import SimplePeer from "simple-peer";
+  import { toArrayWithKeyAsId } from '../heplers';
   import HeaderPanel from './HeaderPanel';
   import OfficesList from './OfficesList';
   import UsersList from './UsersList';
@@ -67,7 +67,7 @@
 
       this.current_user.name = userName
 
-      navigator.getUserMedia({ video: true, audio: false }, (stream) => {_this.current_user.stream = stream}, function () {})
+      navigator.getUserMedia({ video: false, audio: true }, (stream) => {_this.current_user.stream = stream}, function () {})
 
       _this.personalChannel = socket.channel("user:" + userName, {})
 
@@ -86,6 +86,11 @@
         .receive("error", resp => { console.log("Unable to join to my channel", resp) })
 
       _this.personalChannel.on("message", function(payload) { console.log(payload) });
+
+      _this.personalChannel.on("room_joined", function(payload) {
+        console.log(payload)
+        _this.connectToUsers(payload.message)
+      });
       // Listening event
       _this.officeLobby.on('office_updated', function(payload) {
         console.log('OFFICE UPDATED');
@@ -114,7 +119,7 @@
             console.log('Stream received #1')
             var video = document.createElement('video')
             video.src = window.URL.createObjectURL(stream)
-            document.body.appendChild(video)
+            document.getElementById('media-container').appendChild(video)
             video.play()
           })
 
@@ -159,6 +164,11 @@
           to_id: id,
           user: name
         })
+
+        if (current_room) {
+          this.dropAllExistingPears()
+        }
+
         officeLobby.push('take_place', {
           office_id: '1',
           from_id: current_room,
@@ -187,7 +197,7 @@
           console.log('Stream received #2')
           var video = document.createElement('video')
           video.src = window.URL.createObjectURL(stream)
-          document.body.appendChild(video)
+          document.getElementById('media-container').appendChild(video)
           video.play()
         })
 
@@ -195,6 +205,21 @@
       },
       connectToUsers(users) {
         users.forEach((user) => { this.initiatePeerConnection(user) })
+      },
+      dropAllExistingPears() {
+        let _this = this
+
+        R.keys(_this.current_user.inboundConnections).forEach(function(peer_name) {
+          _this.current_user.inboundConnections[peer_name].destroy();
+          delete _this.current_user.inboundConnections[peer_name]
+        })
+
+        R.keys(_this.current_user.outboundConnections).forEach(function(peer_name) {
+          _this.current_user.outboundConnections[peer_name].destroy();
+          delete _this.current_user.outboundConnections[peer_name]
+        })
+
+        window.Array.from(document.querySelectorAll('video'), el => el).forEach(el => el.remove())
       }
 
     }

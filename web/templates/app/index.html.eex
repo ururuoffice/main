@@ -2,3 +2,4 @@
   <app><app>
 </div>
 <div id="user-id" data-user="<%= @current_user.name %>"></div>
+<div id="media-container" style="display:none"></div>
