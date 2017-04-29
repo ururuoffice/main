@@ -19,17 +19,45 @@ defmodule Main.OfficeController do
               id: "1",
               title: "",
               coords: %{ top: "10px", left: "10px" },
+              user: nil
             },
             %{
               id: "2",
               title: "",
               coords: %{ top: "10px", left: "70px" },
+              user: nil
+            },
+            %{
+              id: "3",
+              title: "",
+              coords: %{ top: "10px", left: "130px" },
+              user: nil
             },
           ],
         },
         %{
           title: "",
           dimentions: %{ width: "220px", height: "220px", top: "220px", left: "1000px" },
+          places: [
+            %{
+              id: "1",
+              title: "",
+              coords: %{ top: "10px", left: "10px" },
+              user: nil
+            },
+            %{
+              id: "2",
+              title: "",
+              coords: %{ top: "10px", left: "70px" },
+              user: nil
+            },
+            %{
+              id: "3",
+              title: "",
+              coords: %{ top: "10px", left: "130px" },
+              user: nil
+            },
+          ],
         }
       ]
     }
