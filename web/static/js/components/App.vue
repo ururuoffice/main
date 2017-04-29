@@ -61,16 +61,25 @@
             },
           },
         ],
-        channel: socket.channel("room:lobby", {})
+        channel: socket.channel("office:lobby", {})
       };
     },
     mounted() {
       console.log('MOUNT')
       console.log(socket)
 
-      this.channel.join()
+      const { channel } = this
+
+      channel.join()
         .receive("ok", resp => { console.log("Joined successfully", resp) })
         .receive("error", resp => { console.log("Unable to join", resp) })
+
+      // Listening event
+      channel.on("office_updated", function(payload) { console.log(payload) })
+
+      channel.push("join_office:1", {} )
+
+      channel.push("take_place", {office_id: "1", from_id: null, to_id: "1", user: "username"})
     },
     computed: {
       getOfficeStyles() {
