@@ -13,6 +13,7 @@
 </template>
 
 <script>
+  import socket from "../socket"
   import Room from './Room';
 
   export default {
@@ -60,7 +61,16 @@
             },
           },
         ],
+        channel: socket.channel("room:lobby", {})
       };
+    },
+    mounted() {
+      console.log('MOUNT')
+      console.log(socket)
+
+      this.channel.join()
+        .receive("ok", resp => { console.log("Joined successfully", resp) })
+        .receive("error", resp => { console.log("Unable to join", resp) })
     },
     computed: {
       getOfficeStyles() {

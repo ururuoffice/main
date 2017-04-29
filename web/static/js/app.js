@@ -18,7 +18,6 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-import socket from "./socket"
 import Vue from 'vue'
 import App from "./components/App.vue"
 
@@ -32,8 +31,7 @@ new Vue({
 });
 
 // Now that you are connected, you can join channels with a topic:
-window.socket = socket;
-window.channel = socket.channel("room:lobby", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+// window.channel = socket.channel("room:lobby", {})
+// channel.join()
+//   .receive("ok", resp => { console.log("Joined successfully", resp) })
+//   .receive("error", resp => { console.log("Unable to join", resp) })

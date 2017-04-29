@@ -14,8 +14,6 @@
   import { prependCssDimension } from '../heplers';
   import Place from './Place';
 
-  console.log(prependCssDimension)
-
   export default {
     name: 'room',
     props: {
