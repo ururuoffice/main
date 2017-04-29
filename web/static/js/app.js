@@ -18,13 +18,19 @@ import "phoenix_html"
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-import socket from "./socket"
 import Vue from 'vue'
-import App from "../components/App.vue"
+import App from "./components/App.vue"
 
 window.userId = Math.random().toString(36).substring(7)
 
 Vue.component('app', App)
+
+new Vue({
+  el: '#app',
+  render(createElement) {
+    return createElement(App, {})
+  }
+});
 
 // Now that you are connected, you can join channels with a topic:
 window.socket = socket;
@@ -44,13 +50,6 @@ personalChannel.join()
   .receive("error", resp => { console.log("Unable to join to my channel", resp) })
 
 personalChannel.on("message", function(payload) { console.log(payload) });
-
-new Vue({
-  el: '#app',
-  render(createElement) {
-    return createElement(App, {})
-  }
-});
 
 import SimplePeer from "simple-peer"
 
