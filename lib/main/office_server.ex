@@ -35,11 +35,11 @@ defmodule Main.OfficeServer do
   def leave_place(office, room_id, user_id) do
     state = get_state(office)
 
-    case find_place(state, room_id, nil) do
+    case find_place(state, room_id, user_id) do
       nil ->
         {:error, "Can't find user in the room"}
       place_id ->
-        new_state = put_in state, [:rooms, room_id, :places, place_id, :user], user_id
+        new_state = put_in state, [:rooms, room_id, :places, place_id, :user], nil
         update(new_state, office)
 
         {:ok, place_id}
