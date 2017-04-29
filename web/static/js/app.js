@@ -25,6 +25,7 @@ import App from "../components/App.vue"
 Vue.component('app', App)
 
 // Now that you are connected, you can join channels with a topic:
+window.socket = socket;
 window.channel = socket.channel("room:lobby", {})
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })

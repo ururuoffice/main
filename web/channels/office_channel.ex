@@ -9,9 +9,17 @@ defmodule Main.OfficeChannel do
     end
   end
 
+  def handle_in("join_office:" <> office_id, _payload, socket) do
+    office = Main.Models.Office.find office_id
+    Main.Office.new office
+
+    broadcast! socket, "office_updated", Main.Office.get_state(office)
+    {:noreply, socket}
+  end
+
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
-  def handle_in("take_place", %{office_id: office_id, from_id: from_id, to_id: to_id, user: user}, socket) do
+  def handle_in("take_place", %{"office_id" => office_id, "from_id" => from_id, "to_id" => to_id, "user" => user}, socket) do
     #broadcast! socket, "ping", payload
     office = Main.Models.Office.find office_id
 
@@ -22,7 +30,7 @@ defmodule Main.OfficeChannel do
           Main.Office.leave_place office, from_id, user
         end
 
-        broadcast! socket, "place_taken", %{place_id: place_id}
+        broadcast! socket, "office_updated", Main.Office.get_state(office)
     end
 
     {:noreply, socket}
