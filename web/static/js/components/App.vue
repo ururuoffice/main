@@ -27,6 +27,7 @@
   import socket from "../socket";
   import Room from './Room';
   import R from 'ramda';
+  import SimplePeer from "simple-peer"
   import { toArrayWithKeyAsId } from '../heplers'
   import HeaderPanel from './HeaderPanel';
   import OfficesList from './OfficesList';
@@ -42,10 +43,15 @@
     },
     data() {
       return {
-        channel: socket.channel('office:lobby', {}),
+        officeLobby: socket.channel('office:lobby', {}),
+        usersLobby: socket.channel("user:lobby", {}),
+        personalChannel: null,
         current_user: {
           name: 'username',
-          current_room: null
+          current_room: null,
+          stream: null,
+          outboundConnections: {},
+          inboundConnections: {}
         },
         state: null,
         officesListVisible: false,
@@ -53,27 +59,72 @@
       };
     },
     mounted() {
-      const { channel } = this
+      console.log('mounted')
+
       const _this = this
 
       const userName = document.getElementById('user-id').dataset.user
 
       this.current_user.name = userName
 
+      navigator.getUserMedia({ video: true, audio: false }, (stream) => {_this.current_user.stream = stream}, function () {})
+
+      _this.personalChannel = socket.channel("user:" + userName, {})
+
       console.log(userName)
 
-      channel.join()
+      _this.officeLobby.join()
         .receive('ok', resp => { console.log('Joined successfully', resp) })
         .receive('error', resp => { console.log('Unable to join', resp) })
 
+      _this.usersLobby.join()
+        .receive("ok", resp => { console.log("Joined successfully to usersLobby", resp) })
+        .receive("error", resp => { console.log("Unable to join to usersLobby", resp) })
+
+      _this.personalChannel.join()
+        .receive("ok", resp => { console.log("Joined successfully to my channel", resp) })
+        .receive("error", resp => { console.log("Unable to join to my channel", resp) })
+
+      _this.personalChannel.on("message", function(payload) { console.log(payload) });
       // Listening event
-      channel.on('office_updated', function(payload) {
+      _this.officeLobby.on('office_updated', function(payload) {
         console.log('OFFICE UPDATED');
         console.log(window.JSON.stringify(payload, null, 2));
         _this.state = payload;
       });
 
-      channel.push('join_office:1', {});
+      _this.personalChannel.on("webrtc-connection-requested", function(payload) {
+        let signal = payload.message
+        console.log(signal)
+
+        let current_user = _this.current_user
+
+        let requesterId = signal.userId
+        let peer = current_user.outboundConnections[requesterId] || current_user.inboundConnections[requesterId]
+
+        if (!peer) {
+          peer = new SimplePeer({stream: current_user.stream});
+
+          peer.on('signal', function (data) {
+            console.log('Confirm WebRTC connection', data)
+            _this.sendMessageToUser(requesterId, "webrtc-connection-requested", { userId: current_user.name, data: data })
+          });
+
+          peer.on('stream', function (stream) {
+            console.log('Stream received #1')
+            var video = document.createElement('video')
+            video.src = window.URL.createObjectURL(stream)
+            document.body.appendChild(video)
+            video.play()
+          })
+
+          current_user.inboundConnections[requesterId] = peer
+        }
+
+        peer.signal(signal.data)
+      });
+
+      _this.officeLobby.push('join_office:1', {});
     },
     computed: {
       getOfficeStyles() {
@@ -91,11 +142,14 @@
       }
     },
     methods: {
+      sendMessageToUser(user, type, message) {
+        this.usersLobby.push("message_for_user:" + user, {type: type, message: message})
+      },
       enterRoom(id) {
         console.log('ENTER ROOM ID');
         console.log(id);
 
-        const { channel, current_user: { name, current_room } } = this
+        const { officeLobby, current_user: { name, current_room } } = this
 
         if(id === current_room) return
 
@@ -105,7 +159,7 @@
           to_id: id,
           user: name
         })
-        channel.push('take_place', {
+        officeLobby.push('take_place', {
           office_id: '1',
           from_id: current_room,
           to_id: id,
@@ -117,7 +171,32 @@
       toggleOffices() {
         this.officesListVisible = !this.officesListVisible
         console.log('toggle', this.officesListVisible)
+      },
+      initiatePeerConnection(user) {
+        let _this = this
+        let current_user = _this.current_user
+
+        var peer = new SimplePeer({ initiator: true, stream: current_user.stream });
+
+        peer.on('signal', function (data) {
+          console.log('Initiate WebRTC connection', data)
+          _this.sendMessageToUser(user, "webrtc-connection-requested", { userId: current_user.name, data: data })
+        })
+
+        peer.on('stream', function (stream) {
+          console.log('Stream received #2')
+          var video = document.createElement('video')
+          video.src = window.URL.createObjectURL(stream)
+          document.body.appendChild(video)
+          video.play()
+        })
+
+        current_user.outboundConnections[user] = peer
+      },
+      connectToUsers(users) {
+        users.forEach((user) => { this.initiatePeerConnection(user) })
       }
+
     }
   };
 </script>
