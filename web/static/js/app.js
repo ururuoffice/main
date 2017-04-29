@@ -21,6 +21,8 @@ import "phoenix_html"
 import Vue from 'vue'
 import App from "./components/App.vue"
 
+window.userId = Math.random().toString(36).substring(7)
+
 Vue.component('app', App)
 
 new Vue({
@@ -29,3 +31,87 @@ new Vue({
     return createElement(App, {})
   }
 });
+
+// Now that you are connected, you can join channels with a topic:
+window.socket = socket;
+window.channel = socket.channel("room:lobby", {})
+channel.join()
+  .receive("ok", resp => { console.log("Joined successfully", resp) })
+  .receive("error", resp => { console.log("Unable to join", resp) })
+
+window.usersLobby = socket.channel("user:lobby", {})
+usersLobby.join()
+  .receive("ok", resp => { console.log("Joined successfully to usersLobby", resp) })
+  .receive("error", resp => { console.log("Unable to join to usersLobby", resp) })
+
+window.personalChannel = socket.channel("user:" + userId, {})
+personalChannel.join()
+  .receive("ok", resp => { console.log("Joined successfully to my channel", resp) })
+  .receive("error", resp => { console.log("Unable to join to my channel", resp) })
+
+personalChannel.on("message", function(payload) { console.log(payload) });
+
+import SimplePeer from "simple-peer"
+
+window.currentUserStream = null;
+
+window.outboundConnections = {}
+window.inboundConnections = {}
+
+navigator.getUserMedia({ video: true, audio: false }, function(stream) {window.currentUserStream = stream}, function () {})
+
+function sendMessageToUser(user, type, message) {
+  usersLobby.push("message_for_user:" + user, {type: type, message: message})
+}
+
+personalChannel.on("webrtc-connection-requested", function(payload) {
+  let signal = payload.message
+  console.log(signal)
+
+  let requesterId = signal.userId
+  let peer = outboundConnections[requesterId] || inboundConnections[requesterId]
+
+  if (!peer) {
+    peer = new SimplePeer({stream: window.currentUserStream});
+
+    peer.on('signal', function (data) {
+      console.log('Confirm WebRTC connection', data)
+      sendMessageToUser(requesterId, "webrtc-connection-requested", { userId: window.userId, data: data })
+    });
+
+    peer.on('stream', function (stream) {
+      console.log('Stream received #1')
+      var video = document.createElement('video')
+      video.src = window.URL.createObjectURL(stream)
+      document.body.appendChild(video)
+      video.play()
+    })
+
+    inboundConnections[requesterId] = peer
+  }
+
+  peer.signal(signal.data)
+});
+
+window.initiatePeerConnection = function(user) {
+  var peer = new SimplePeer({ initiator: true, stream: window.currentUserStream });
+
+  peer.on('signal', function (data) {
+    console.log('Initiate WebRTC connection', data)
+    sendMessageToUser(user, "webrtc-connection-requested", { userId: window.userId, data: data })
+  })
+
+  peer.on('stream', function (stream) {
+    console.log('Stream received #2')
+    var video = document.createElement('video')
+    video.src = window.URL.createObjectURL(stream)
+    document.body.appendChild(video)
+    video.play()
+  })
+
+  outboundConnections[user] = peer
+}
+
+window.connectToUsers = function(users) {
+  users.forEach(function(user) { initiatePeerConnection(user) })
+}

@@ -1,5 +1,9 @@
 <template>
   <div>
+    <header-panel
+      @toggleOffices="officesListVisible = !officesListVisible"
+      @toggleUsers="usersListVisible = !usersListVisible"
+    ></header-panel>
     <div v-if="state === null" class="spinner">
       <span class="spinner__text"> Loading... </span>
     </div>
@@ -14,19 +18,27 @@
         @roomClick="enterRoom"
       ></room>
     </div>
+    <offices-list :open="officesListVisible"></offices-list>
+    <users-list :open="usersListVisible"></users-list>
   </div>
 </template>
 
 <script>
-  import socket from '../socket'
+  import socket from "../socket";
   import Room from './Room';
   import R from 'ramda';
   import { toArrayWithKeyAsId } from '../heplers'
+  import HeaderPanel from './HeaderPanel';
+  import OfficesList from './OfficesList';
+  import UsersList from './UsersList';
 
   export default {
     name: 'app',
     components: {
       Room,
+      HeaderPanel,
+      OfficesList,
+      UsersList
     },
     data() {
       return {
@@ -35,7 +47,9 @@
           name: 'username',
           current_room: null
         },
-        state: null
+        state: null,
+        officesListVisible: false,
+        usersListVisible: false
       };
     },
     mounted() {
@@ -93,6 +107,10 @@
         });
 
         this.current_user.current_room = id
+      },
+      toggleOffices() {
+        this.officesListVisible = !this.officesListVisible
+        console.log('toggle', this.officesListVisible)
       }
     }
   };

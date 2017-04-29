@@ -4,6 +4,7 @@ defmodule Main.UserSocket do
   ## Channels
   channel "room:*", Main.RoomChannel
   channel "office:*", Main.OfficeChannel
+  channel "user:*", Main.UserChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

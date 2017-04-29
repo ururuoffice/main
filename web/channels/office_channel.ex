@@ -10,10 +10,10 @@ defmodule Main.OfficeChannel do
   end
 
   def handle_in("join_office:" <> office_id, _payload, socket) do
-    office = Main.Models.Office.find office_id
-    Main.Office.new office
+    office = Main.Models.OldOffice.find office_id
+    Main.OfficeServer.new office
 
-    broadcast! socket, "office_updated", Main.Office.get_state(office)
+    broadcast! socket, "office_updated", Main.OfficeServer.get_state(office)
     {:noreply, socket}
   end
 
@@ -21,16 +21,16 @@ defmodule Main.OfficeChannel do
   # by sending replies to requests from the client
   def handle_in("take_place", %{"office_id" => office_id, "from_id" => from_id, "to_id" => to_id, "user" => user}, socket) do
     #broadcast! socket, "ping", payload
-    office = Main.Models.Office.find office_id
+    office = Main.Models.OldOffice.find office_id
 
-    case Main.Office.take_place(office, to_id, user) do
+    case Main.OfficeServer.take_place(office, to_id, user) do
       {:error, message} -> broadcast! socket, "place_taken", %{error: message}
-      {:ok,    place_id} ->
+      {:ok,    _place_id} ->
         if from_id do
-          Main.Office.leave_place office, from_id, user
+          Main.OfficeServer.leave_place office, from_id, user
         end
 
-        broadcast! socket, "office_updated", Main.Office.get_state(office)
+        broadcast! socket, "office_updated", Main.OfficeServer.get_state(office)
     end
 
     {:noreply, socket}
