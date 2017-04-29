@@ -1,5 +1,9 @@
 <template>
   <div>
+    <header-panel
+      @toggleOffices="officesListVisible = !officesListVisible"
+      @toggleUsers="usersListVisible = !usersListVisible"
+    ></header-panel>
     <div class="office" :style="getOfficeStyles">
       <room
         v-for="room in rooms"
@@ -9,17 +13,25 @@
         :bgUrl="room.bgUrl"
       ></room>
     </div>
+    <offices-list :open="officesListVisible"></offices-list>
+    <users-list :open="usersListVisible"></users-list>
   </div>
 </template>
 
 <script>
-  import socket from "../socket"
+  import socket from "../socket";
   import Room from './Room';
+  import HeaderPanel from './HeaderPanel';
+  import OfficesList from './OfficesList';
+  import UsersList from './UsersList';
 
   export default {
     name: 'app',
     components: {
       Room,
+      HeaderPanel,
+      OfficesList,
+      UsersList
     },
     data() {
       return {
@@ -61,7 +73,9 @@
             },
           },
         ],
-        channel: socket.channel("office:lobby", {})
+        channel: socket.channel("office:lobby", {}),
+        officesListVisible: false,
+        usersListVisible: false
       };
     },
     mounted() {
@@ -89,6 +103,12 @@
           width: `${width}px`,
           height: `${height}px`
         }
+      }
+    },
+    methods: {
+      toggleOffices() {
+        this.officesListVisible = !this.officesListVisible
+        console.log('toggle', this.officesListVisible)
       }
     }
   };
