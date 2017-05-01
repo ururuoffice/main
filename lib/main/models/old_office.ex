@@ -2,8 +2,8 @@ defmodule Main.Models.OldOffice do
   def find(_id) do
     %{
       id: "1",
-      width: 1000,
-      height: 800,
+      width: 780,
+      height: 600,
       title: "JetrubyOffice",
       rooms: %{
         "1" => %{
