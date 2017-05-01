@@ -31,7 +31,7 @@
     },
     computed: {
       getRoomStyles() {
-        const {dimensions, bg_url} = this;
+        const { dimensions, bg_url } = this;
 
         const dimensionsCss = prependCssDimension(dimensions);
         const bgCss = { backgroundImage: `url(${bg_url})` };
