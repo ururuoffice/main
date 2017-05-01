@@ -1,6 +1,6 @@
 <template>
   <div
-    class="room" :style="getRoomStyles" @click="roomClick">
+    class="room" :style="getRoomStyles" @dblclick="roomClick">
     <place
       v-for="place in getPlaces"
       :position="place.coords"
@@ -57,7 +57,7 @@
 
 <style scoped>
   .room {
-    border: 3px solid red;
+    border: 3px solid #6e6e6e;
     position: absolute;
     background-position: center;
     background-repeat: no-repeat;

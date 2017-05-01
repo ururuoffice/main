@@ -239,9 +239,10 @@
 
   .office {
     position: relative;
+    box-shadow: inset 0 0 0 3px rgba(110, 110, 110, 1);
     margin: 50px auto;
-    border: 10px solid #6e6e6e;
-    border-radius: 8px;
+    border: 7px solid #6e6e6e;
+    background-color: #d9d6cc;
   }
 
   .spinner {
