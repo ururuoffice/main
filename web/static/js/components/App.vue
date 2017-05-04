@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background-color: #63a433; width: 100%">
     <header-panel
       @toggleOffices="officesListVisible = !officesListVisible"
       @toggleUsers="usersListVisible = !usersListVisible"

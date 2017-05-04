@@ -36,6 +36,7 @@
     width: 40px;
     height: 40px;
     border-radius: 100%;
+    user-select: none;
   }
 
   .user {
