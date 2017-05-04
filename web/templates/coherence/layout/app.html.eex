@@ -16,7 +16,7 @@
       <header class="header">
         <nav role="navigation">
         </nav>
-        <span class="logo"></span>
+        <img src="<%= static_path(@conn, "/images/ururu_logo.svg") %>" alt="Ururu Office" style="margin: 20px 0">
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

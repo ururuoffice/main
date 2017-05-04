@@ -14,25 +14,24 @@
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <%= if @current_user do %>
-              <!--<li><%= link("Offices", to: office_path(@conn, :index)) %></li>-->
-              <li><%= link("Log out", to: session_path(@conn, :delete), method: "delete") %></li>
-            <%= else %>
-              <li><%= link("Sign Up", to: registration_path(@conn, :new)) %></li>
-              <li><%= link("Sign In", to: session_path(@conn, :new)) %></li>
-            <%= end %>
-          </ul>
-        </nav>
-      </header>
+    <div class="wrapper">
+      <nav class="navbar navbar-default">
+        <a href="#" class="navbar-brand ururu-logo-wrapper" title="Ururu Office">
+          <img src="images/ururu_logo.svg" />
+        </a>
+        <ul class="nav navbar-nav pull-right">
+          <%= if @current_user do %>
+            <!--<li><%= link("Offices", to: office_path(@conn, :index)) %></li>-->
+            <li><%= link("Log out", to: session_path(@conn, :delete), method: "delete") %></li>
+          <%= else %>
+            <li><%= link("Sign Up", to: registration_path(@conn, :new)) %></li>
+            <li><%= link("Sign In", to: session_path(@conn, :new)) %></li>
+          <%= end %>
+        </ul>
+      </nav>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
-
 
       <main role="main">
         <%= render @view_module, @view_template, assigns %>

@@ -1,3 +1,38 @@
+/*main {*/
+  /*background-color: #63a433;*/
+  /*height: 100vh;*/
+/*}*/
+
 body {
-  background-color: #63a433;
+  display: flex;
+}
+
+.wrapper {
+  width: 100%;
+  min-width: 1024px;
+  display: flex;
+  flex-direction: column;
+}
+
+.big-logo img {
+  width: 100%;
+  -webkit-filter: sepia(1);
+  filter: sepia(1);
+}
+
+.wrapper .navbar {
+  margin-bottom: 0;
+}
+
+main {
+  display: flex;
+}
+
+.ururu-logo-wrapper {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.ururu-logo-wrapper > img {
+  height: 100%;
 }

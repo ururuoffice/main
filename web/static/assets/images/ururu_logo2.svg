@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="472px" height="162px" viewBox="0 0 472 162" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>URURU</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-1.0%" y="-2.4%" width="102.9%" height="106.8%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="2" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <path d="M14,184 L364,184" id="path-2"></path>
+        <filter x="-2.0%" y="-233.3%" width="105.1%" height="700.0%" filterUnits="objectBoundingBox" id="filter-3">
+            <feMorphology radius="2" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="2" dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="2" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="2" dy="2" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="URURU" transform="translate(-10.000000, -39.000000)">
+            <g filter="url(#filter-1)" fill="#000000">
+                <text font-family="Futura-Medium, Futura" font-size="144" font-weight="400">
+                    <tspan x="0" y="150">URURU</tspan>
+                </text>
+                <text id="Office" font-family="AppleSDGothicNeo-Regular, Apple SD Gothic Neo" font-size="36" font-weight="normal">
+                    <tspan x="385" y="196">Office</tspan>
+                </text>
+            </g>
+            <g id="Line" stroke-linecap="square">
+                <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                <use stroke="#000000" stroke-width="4" xlink:href="#path-2"></use>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -2,8 +2,8 @@ defmodule Main.Models.OldOffice do
   def find(_id) do
     %{
       id: "1",
-      width: 780,
-      height: 600,
+      width: 1000,
+      height: 800,
       title: "JetrubyOffice",
       rooms: %{
         "1" => %{
@@ -13,7 +13,7 @@ defmodule Main.Models.OldOffice do
               width: 280,
               height: 480,
               top: 0,
-              left: 0
+              right: 0
             },
             places: %{
               "1" => %{
@@ -117,6 +117,67 @@ defmodule Main.Models.OldOffice do
               },
               user: nil
             }
+          }
+        },
+          "3" => %{
+            title: "Room 3",
+            type: "open_space",
+            bg_url: "images/open-space.png",
+            dimensions: %{
+              width: 420,
+              height: 786,
+              top: 0,
+              left: 0
+            },
+            places: %{
+              "1" => %{
+                title: "",
+                coords: %{
+                  top: 70,
+                  right: 107
+                },
+                user: nil
+              },
+              "2" => %{
+                title: "",
+                coords: %{
+                  top: 70,
+                  left: 107
+                },
+                user: nil
+              },
+              "3" => %{
+                title: "",
+                coords: %{
+                  bottom: 70,
+                  right: 107
+                },
+                user: nil
+              },
+              "4" => %{
+                title: "",
+                coords: %{
+                  bottom: 70,
+                  left: 107
+                },
+                user: nil
+              },
+              "5" => %{
+                title: "",
+                coords: %{
+                  bottom: 284,
+                  right: 107
+                },
+                user: nil
+              },
+              "6" => %{
+                title: "",
+                coords: %{
+                  bottom: 284,
+                  left: 107
+                },
+                user: nil
+              }
           }
         }
       }
