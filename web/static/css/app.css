@@ -1,10 +1,12 @@
-/*main {*/
-  /*background-color: #63a433;*/
-  /*height: 100vh;*/
-/*}*/
-
 body {
   display: flex;
+  min-height: 100vh;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .wrapper {
@@ -22,10 +24,6 @@ body {
 
 .wrapper .navbar {
   margin-bottom: 0;
-}
-
-main {
-  display: flex;
 }
 
 .ururu-logo-wrapper {
